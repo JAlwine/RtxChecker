@@ -1,4 +1,5 @@
 import requests
+import datetime
 import time
 import winsound
 import datetime
@@ -32,9 +33,12 @@ def check_link(link_url):
         is_sold_out = source.__contains__("class=\"btn btn-disabled btn-lg btn-block add-to-cart-button\"")
 
         if not is_sold_out:
-            webbrowser.open(links[link_url])
-            save_file = open(link_url+".html","w")
-            save_file.write(source)
+            dt = datetime.datetime.now()
+            time_stamp = dt.strftime("%d/%m/%Y: %H:%M:%S")
+
+            webbrowser.open(link_url)
+            save_file = open("CardsInStock.txt","w")
+            save_file.write(time_stamp, link_url)
             save_file.close()
         time.sleep(0.2)
     except requests.exceptions.ConnectionError:
@@ -45,9 +49,9 @@ def check_link(link_url):
 
 
 def signal():
-    while True:
-        for i in range(1, 10):
-            winsound.Beep(i * 100, 200)
+    for i in range(1,5):
+        for j in range(1, 10):
+            winsound.Beep(j * 100, 200)
         time.sleep(0.5)
 
 while True:
